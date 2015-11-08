@@ -6,9 +6,13 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 
 public class DefaultExceptionAttributes implements ExceptionAttributes {
+
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	public static final String TIMESTAMP = "timestamp";
 
@@ -25,14 +29,14 @@ public class DefaultExceptionAttributes implements ExceptionAttributes {
 	@Override
 	public Map<String, Object> getExceptionAttributes(Exception exception,
 			HttpServletRequest httpRequest, HttpStatus httpStatus) {
-
+		logger.info("> getExceptionAttributes");
 		Map<String, Object> exceptionAttributes = new LinkedHashMap<String, Object>();
 
 		exceptionAttributes.put(TIMESTAMP, new Date());
 		addHttpStatus(exceptionAttributes, httpStatus);
 		addExceptionDetail(exceptionAttributes, exception);
 		addPath(exceptionAttributes, httpRequest);
-
+		logger.info("< getExceptionAttributes");
 		return exceptionAttributes;
 	}
 
